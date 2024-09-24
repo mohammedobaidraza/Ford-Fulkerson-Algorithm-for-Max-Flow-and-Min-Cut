@@ -3,33 +3,72 @@
 This project implements the Ford-Fulkerson algorithm to find the maximum flow in a flow network and the minimum cut that separates the source and target. The algorithm is applied to a directed graph where edges have capacities and the goal is to push the maximum flow from a designated source node to a target node.
 
 ## Algorithm Steps
-### Residual Graph: Initialize a residual graph that represents the current capacities of the network.
-### Augmenting Path: Find paths from the source to the target where flow can still be pushed (i.e., paths with available capacity).
-### Flow Update: For each augmenting path, compute the maximum possible flow (the bottleneck capacity) and update the residual capacities.
-### Repeat: Continue finding augmenting paths and updating flow until no more paths are available.
-### Min Cut: After computing the max flow, identify the edges in the residual graph that form the minimum cut, separating the reachable vertices from the non-reachable vertices.
+1. Residual Graph: Initialize a residual graph that represents the current capacities of the network.
+2. Augenting Path: Find paths from the source to the target where flow can still be pushed (i.e., paths with available capacity).
+3. Flow Update: For each augmenting path, compute the maximum possible flow (the bottleneck capacity) and update the residual capacities.
+4. Repeat: Continue finding augmenting paths and updating flow until no more paths are available.
+5. Min Cut: After computing the max flow, identify the edges in the residual graph that form the minimum cut, separating the reachable vertices from the non-reachable vertices.
 
 ## Files
-### max_flow_min_cut.py: Contains the implementation of the Ford-Fulkerson algorithm with functions to compute the max flow and find the min cut.
-### Test Graph: A sample test graph is included to demonstrate the use of the algorithm.
+**max_flow_min_cut.py**: Contains the implementation of the Ford-Fulkerson algorithm with functions to compute the max flow and find the min cut.
+
+**Test Graph**: A sample test graph is included to demonstrate the use of the algorithm.
 
 ## Functions
-### bfs_reachable_nodes(graph, source)
+**bfs_reachable_nodes(graph, source)**
 Finds all nodes that are reachable from the source node in the residual graph.
 
-### find_min_cut(graph, residual_graph, source)
+**find_min_cut(graph, residual_graph, source)**
 Identifies the edges that form the minimum cut after the max flow has been computed.
 
-### ff_with_min_cut(graph, source, target)
+**ff_with_min_cut(graph, source, target)**
 Implements the Ford-Fulkerson algorithm to compute the max flow and find the min cut.
 
-### Returns:
+## Returns:
 
-### max_flow: The maximum flow that can be pushed through the network.
-### min_cut: The edges that form the minimum cut.
+ max_flow: The maximum flow that can be pushed through the network.
+ 
+ min_cut: The edges that form the minimum cut.
 ## Usage
-### To use the code, simply define your graph as an adjacency matrix, where each element represents the capacity of the edge between two vertices. Then call the ff_with_min_cut() function, passing in the graph, source, and target nodes.
+ To use the code, simply define your graph as an adjacency matrix, where each element represents the capacity of the edge between two vertices. Then call the ff_with_min_cut() function, passing in the graph, source, and target nodes.
 
+
+# Flows and cuts
+
+A flow graph is a directed graph $G=(V,E)$ whose edges are characterized by a capacity to carry a flow. In the adjacency matrix representation, $G_{ij}=c(i,j)$, i.e., the capacity of the edge from vertex $i$ to vertex $j$. If there is no edge $i→j$, the capacity is 0 and correspondingly, $G_{ij}=0$.
+
+In a flow graph, our objective is to maximize the flow between two vertices. We label these two special vertices as *source* and *target.*
+
+The **Ford-Fulkerson** method finds the maximum flow that can be pushed through a network, as follows:
+
+```text
+initialize max_flow to 0
+while there is an augmenting path:
+  add augmenting path's min residual capacity to max_flow
+return max_flow
+```
+
+The technique, as stated above, depends on *augmenting paths*. As long as we figure out what an augmenting path is, we are all set.
+
+## Notation
+
+Instead of a weight, edges in flow graphs have a capacity. We write $u \xrightarrow{10} v$ to show that the capacity of the edge from vertex $u$ to $v$ is 10.
+
+The capacity tells us how much flow this edge can accomodate, at most. For example, if the edge was a road that connected two towns, it can accomodate 10 cars per minute. If we tried to send 11 cars per minute, we'll cause a traffic jam.
+
+Capacities, and flows, are typically expressed in unit time such as seconds, hours, etc. For example, a road has a capacity of 10 cars per minute, an wire has a capacity of $6.24\times 10^8$ electrons per second, and a grocery register has a capacity of 20 clients per hour. In a flow graph, we do not show explicitly the units. We refer to the capacity just by its value, e.g., a "capacity of 10". The assumption is that we are in agreement of what that 10 means in the context of the graph we study (could be 10 cars a minute, 20 clients per hour, etc).
+
+When there is flow across an edge, we show its value too, with a second number: $u \xrightarrow{5/10} v$ indicates that there is a flow of 5 (something per some unit time) across an edge that can accommodate up to 10 somethings per unit time.
+
+If we wish to be dramatic, we could write $u \xrightarrow{0/10} v$ to emphasize that there is no flow over an edge. In desperate situations, we may even write $u \xrightarrow{0} v$ to indicate an edge with 0 capacity; though it may be best if we just admitted there is no edge between $u$ and $v$. Algorists that write $u \xrightarrow{0/0} v$ to indicate there is no flow over a non-existing edge, should not be allowed near computers.
+
+## Augmenting path
+
+An augmenting path is a path from the source vertex to the target vertex, $s\rightsquigarrow t$, in the *residual graph.*
+
+## Residual graph
+
+The residual graph is a copy of the input graph. It is the graph on which we try different paths to determine how much flow we can send from $s$ to $t$ in the actual graph. This process destroys existing edges and creates new ones. We do not want this to happen in the actual graph, and so we operate on a working copy that we call the *residual graph*.
 
 # Flows and cuts
 
@@ -125,6 +164,7 @@ $$
 
 
 
+
 A fundemental property of flows, the skew symmetry, defines $f(a,b) = -f(b,a)$, i.e., the flow over an edge $a→b$ is the opposite of the flow in the opposite direction.
 
 Using the skew symmetry, we can write the residual capacity of an edge $u→v$ in the *residual graph,* between successive iterations $t$ and $t+1$ as follows:
@@ -154,7 +194,9 @@ It is important to remember that residual capacities exist only in the residual 
 
 ![reverse flow](https://drive.google.com/uc?id=1_UHrhQf8S_u3IV6yv7YjdP89okm1vSVc)
 
-Figure (b) above shows the same situation but in the residual graph, using residual *capacities*. There are no flows shown in the residual graph. Instead, we see capacities, suggesting the potential for flow. In this case, the edge $u→v$ has a capacity 13. There is also capacity 5 in the opposite direction, mirroring the flow we had in figure (a) above.## The challenge
+Figure (b) above shows the same situation but in the residual graph, using residual *capacities*. There are no flows shown in the residual graph. Instead, we see capacities, suggesting the potential for flow. In this case, the edge $u→v$ has a capacity 13. There is also capacity 5 in the opposite direction, mirroring the flow we had in figure (a) above.
+
+## The challenge
 
 A flow graph is just like any other graph, except that instead of weights edges are characterized by flow capacities. In that respect, a flow graph is represented by an adjacency matrix, where `G[u][v]` is now the capacity of the edge from $u$ to $v$.
 
@@ -183,7 +225,9 @@ An edge is saturated when it carries as much flow as it can. In the input graph,
 The same information is shown a bit differently in the residual graph. Remember that the residual graph shows only capacities -- flows are implied but not shown. In figure (b) above, the saturated edge is shown with 0 capacity. However there is a back edge $v→u$ with capacity 18. That back edge essentially indicates what the maximum capacity of edge $u→v$ could be.
 
 
-If we saturate that edge, the skew symmetry property tells us, we'll reestablish a capacity of 18 from $u$ to $v$, as shown in figure (c) above.## Building it
+If we saturate that edge, the skew symmetry property tells us, we'll reestablish a capacity of 18 from $u$ to $v$, as shown in figure (c) above.
+
+## Building it
 
 Implementing Ford-Fulkerson requires several tasks.
 
@@ -193,6 +237,7 @@ Implementing Ford-Fulkerson requires several tasks.
 $v_0 → v_1 → v_2 → v_3 → v_4$, the parent of $v_4$ is $v_3$, the parent of $v_3$ is $v_2$, and so on. The vertex whose parent is `null` is the first vertex of the path.
 
 * The steps above presuppose that we have a way to assemble and manipulate the residual graph. At the beginning, we assume that the residual graph is the same as the input graph. Then, as long as there is an augmenting path in the residual graph, we adjust its edges to capture available capacities (with back edges used as described earlier).
+
 ## Step-by-step example
 
 Consider the following graph, with vertices $A$ and $E$ the source and the target vertices respectively.
