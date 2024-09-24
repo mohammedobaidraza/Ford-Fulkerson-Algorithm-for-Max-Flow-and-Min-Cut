@@ -1,3 +1,36 @@
+# Ford-Fulkerson Algorithm for Max Flow and Min Cut
+## Description
+This project implements the Ford-Fulkerson algorithm to find the maximum flow in a flow network and the minimum cut that separates the source and target. The algorithm is applied to a directed graph where edges have capacities and the goal is to push the maximum flow from a designated source node to a target node.
+
+## Algorithm Steps
+### Residual Graph: Initialize a residual graph that represents the current capacities of the network.
+### Augmenting Path: Find paths from the source to the target where flow can still be pushed (i.e., paths with available capacity).
+### Flow Update: For each augmenting path, compute the maximum possible flow (the bottleneck capacity) and update the residual capacities.
+### Repeat: Continue finding augmenting paths and updating flow until no more paths are available.
+### Min Cut: After computing the max flow, identify the edges in the residual graph that form the minimum cut, separating the reachable vertices from the non-reachable vertices.
+
+## Files
+### max_flow_min_cut.py: Contains the implementation of the Ford-Fulkerson algorithm with functions to compute the max flow and find the min cut.
+### Test Graph: A sample test graph is included to demonstrate the use of the algorithm.
+
+## Functions
+### bfs_reachable_nodes(graph, source)
+Finds all nodes that are reachable from the source node in the residual graph.
+
+### find_min_cut(graph, residual_graph, source)
+Identifies the edges that form the minimum cut after the max flow has been computed.
+
+### ff_with_min_cut(graph, source, target)
+Implements the Ford-Fulkerson algorithm to compute the max flow and find the min cut.
+
+### Returns:
+
+### max_flow: The maximum flow that can be pushed through the network.
+### min_cut: The edges that form the minimum cut.
+## Usage
+### To use the code, simply define your graph as an adjacency matrix, where each element represents the capacity of the edge between two vertices. Then call the ff_with_min_cut() function, passing in the graph, source, and target nodes.
+
+
 # Flows and cuts
 
 A flow graph is a directed graph $G=(V,E)$ whose edges are characterized by a capacity to carry a flow. In the adjacency matrix representation, $G_{ij}=c(i,j)$, i.e., the capacity of the edge from vertex $i$ to vertex $j$. If there is no edge $i→j$, the capacity is 0 and correspondingly, $G_{ij}=0$.
