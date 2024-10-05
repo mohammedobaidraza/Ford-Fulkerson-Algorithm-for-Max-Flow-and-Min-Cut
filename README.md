@@ -7,7 +7,7 @@ This project implements the Ford-Fulkerson algorithm to find the maximum flow in
 2. Augenting Path: Find paths from the source to the target where flow can still be pushed (i.e., paths with available capacity).
 3. Flow Update: For each augmenting path, compute the maximum possible flow (the bottleneck capacity) and update the residual capacities.
 4. Repeat: Continue finding augmenting paths and updating flow until no more paths are available.
-5. Min Cut: After computing the max flow, identify the edges in the residual graph that form the minimum cut, separating the reachable vertices from the non-reachable vertices.
+5. Min Cut: After computing the max flow, identify the edges in the residual graph that form the minimum cut, separating the reachable vertices from the non-reachable vertices..
 
 ## Files
 **max_flow_min_cut.py**: Contains the implementation of the Ford-Fulkerson algorithm with functions to compute the max flow and find the min cut.
