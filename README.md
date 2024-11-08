@@ -1,5 +1,5 @@
 # Ford-Fulkerson Algorithm for Max Flow and Min Cut
-## Description
+## Descriptions
 This project implements the Ford-Fulkerson algorithm to find the maximum flow in a flow network and the minimum cut that separates the source and target. The algorithm is applied to a directed graph where edges have capacities and the goal is to push the maximum flow from a designated source node to a target node.
 
 ## Algorithm Steps
